@@ -152,6 +152,10 @@ class StanModel:
         If not None, the elements of this list will be assumed to be the
         names of custom C++ header files that should be included.
 
+    libraries : list, [] by default
+        The elements of this list will be assumed to be the
+        names of custom libraries that should be linked in.
+
     include_dirs : list, None by default
         If not None, the directories in this list are added to the search
         path of the compiler.
@@ -226,7 +230,8 @@ class StanModel:
                  model_code=None, stanc_ret=None, include_paths=None,
                  boost_lib=None, eigen_lib=None, verbose=False,
                  obfuscate_model_name=True, extra_compile_args=None,
-                 allow_undefined=False, include_dirs=None, includes=None):
+                 allow_undefined=False, include_dirs=None, includes=None,
+                 libraries=[]):
 
         tbb_dir = os.path.abspath(os.path.join(
             os.path.dirname(__file__), 'stan', 'lib', 'stan_math', 'lib','tbb'
@@ -373,7 +378,7 @@ class StanModel:
                               sources=[pyx_file],
                               define_macros=stan_macros,
                               include_dirs=include_dirs,
-                              libraries=["tbb"],
+                              libraries=["tbb"] + libraries,
                               library_dirs=[tbb_dir],
                               extra_compile_args=extra_compile_args,
                               extra_link_args=extra_link_args,
